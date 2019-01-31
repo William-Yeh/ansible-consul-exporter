@@ -9,6 +9,18 @@
 - block:
     - name: set internal variables for convenience
       set_fact:
+        prometheus_consul_exporter_arch: "amd64"
+      when:
+        - ansible_userspace_bits == "64"
+
+    - name: set internal variables for convenience
+      set_fact:
+        prometheus_consul_exporter_arch: "386"
+      when:
+        - ansible_userspace_bits == "32"
+
+    - name: set internal variables for convenience
+      set_fact:
         prometheus_consul_exporter_tarball_url: "https://github.com/prometheus/consul_exporter/releases/download/{{ prometheus_consul_exporter_version }}/consul_exporter-{{ prometheus_consul_exporter_version }}.linux-amd64.tar.gz"
       when:
         - prometheus_consul_exporter_version in [ '0.1.0', '0.2.0' ]
@@ -23,15 +35,7 @@
 
     - name: set internal variables for convenience
       set_fact:
-        prometheus_consul_exporter_tarball_url: "https://github.com/prometheus/consul_exporter/releases/download/v{{ prometheus_consul_exporter_version }}/consul_exporter-{{ prometheus_consul_exporter_version }}.linux-amd64.tar.gz"
-      when:
-        - ansible_userspace_bits == "64"
-
-    - name: set internal variables for convenience
-      set_fact:
-        prometheus_consul_exporter_tarball_url: "https://github.com/prometheus/consul_exporter/releases/download/v{{ prometheus_consul_exporter_version }}/consul_exporter-{{ prometheus_consul_exporter_version }}.linux-386.tar.gz"
-      when:
-        - ansible_userspace_bits == "32"
+        prometheus_consul_exporter_tarball_url: "https://github.com/prometheus/consul_exporter/releases/download/v{{ prometheus_consul_exporter_version }}/consul_exporter-{{ prometheus_consul_exporter_version }}.linux-{{ prometheus_consul_exporter_arch }}.tar.gz"
 
     - name: download and untar consul_exporter tarball
       unarchive:
@@ -78,7 +82,7 @@
 
 
 - name: set permissions, owner and group
-  file: path={{ prometheus_install_path }}/consul_exporter owner={{ prometheus_user }} group={{ prometheus_group }} mode="go-w"
+  file: path={{ prometheus_install_path }}/consul_exporter-{{ prometheus_consul_exporter_version }}.linux-{{ prometheus_consul_exporter_arch }}/consul_exporter owner={{ prometheus_user }} group={{ prometheus_group }} mode="go-w"
 
 - name: set consul_exporter variables
   copy: src="../files/etc-default-consul_exporter"  dest=/etc/default/consul_exporter
