@@ -15,7 +15,7 @@ User={{ prometheus_user }}
 Group={{ prometheus_group }}
 
 {% if prometheus_consul_exporter_opts is defined %}
-ExecStart={{ prometheus_install_path }}/consul_exporter  {{ prometheus_consul_exporter_opts }}
+ExecStart={{ prometheus_install_path }}/consul_exporter-{{ prometheus_consul_exporter_version }}.linux-{{ prometheus_consul_exporter_arch }}/consul_exporter  {{ prometheus_consul_exporter_opts }}
 {% else %}
-ExecStart={{ prometheus_install_path }}/consul_exporter
+ExecStart={{ prometheus_install_path }}/consul_exporter-{{ prometheus_consul_exporter_version }}.linux-{{ prometheus_consul_exporter_arch }}/consul_exporter
 {% endif %}

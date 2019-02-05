@@ -19,7 +19,7 @@
 
 NAME=consul_exporter
 DESC="Exporter for machine metrics"
-DAEMON={{ prometheus_install_path }}/consul_exporter
+DAEMON={{ prometheus_install_path }}/consul_exporter-{{ prometheus_consul_exporter_version }}.linux-{{ prometheus_consul_exporter_arch }}/consul_exporter
 USER={{ prometheus_user }}
 CONFIG=
 PID="{{ prometheus_pid_path }}/$NAME.pid"

@@ -13,7 +13,7 @@
 prometheus_user:   prometheus
 prometheus_group:  prometheus
 
-prometheus_consul_exporter_version: 0.2.0
+prometheus_consul_exporter_version: 0.4.0
 
 
 gosu_version: 1.9
